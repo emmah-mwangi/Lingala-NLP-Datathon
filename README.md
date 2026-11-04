@@ -1,3 +1,24 @@
+# Team 7 (Datalynk): Lingala Intent Classification
+
+Strathmore NLP Hub Datathon 2026 | Track A (intent classification)
+
+- **Team number:** 7
+- **Team name:** Datalynk
+- **Language:** Lingala 
+
+## Team roles
+| Member | Code | Role |
+|---|---|---|
+| Caroline | T07-A | Language and documentation lead: Lingala authoring, spelling conventions, annotation guide, dataset card, quality report, reviews, error analysis |
+| Emmah | T07-B | Frontend and data-upkeep lead: Streamlit demo, Record Log and contribution.csv upkeep, README, backup recording, volunteer permissions |
+| Tatyana | T07-C | Backend and pipeline lead: repo, validate/train/evaluate, splits, final test run, frozen commit and package |
+
+Lingala volunteers are credited by pseudonymous code (T07-V1 to V3) in the contribution statement.
+
+Based on the Strathmore NLP Hub Datathon Starter Kit v2.0 (see the original instructions below).
+
+---
+
 # Strathmore NLP Hub Datathon starter kit v2.0
 Choose one supported track: intent, sentiment, or limited semantic parsing. See TRACKS.md, NEXT_STEPS.md, NATURAL_DATA.md and examples/. Python 3.10 or later is recommended.
 
