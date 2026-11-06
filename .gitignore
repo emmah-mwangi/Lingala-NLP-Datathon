@@ -22,6 +22,10 @@ secrets.toml
 data/raw/
 data/private/
 
+# Private source log, consent records and volunteer identity evidence
+# Never commit anything under private/ to any public or shared repository
+private/
+
 # Test and coverage output
 .pytest_cache/
 .coverage
