@@ -72,38 +72,34 @@ If you are unsure which label fits, write a note and ask the team lead before su
 
 ## 5. Spelling and language conventions
 
-**⚠ PENDING CONFIRMATION — Caroline (T07-A) must confirm the team's approved spelling conventions before volunteers begin writing.**
+**Approved reference variety: Kinshasa Lingala (Democratic Republic of Congo).**
 
-The following are placeholders. Do not treat them as final until Caroline confirms:
+Caroline (T07-A), the Language and Documentation Lead, is responsible for linguistic review and approval.
 
-- [ ] Diacritic conventions (tonal marks, if used): *[Caroline to specify]*
-- [ ] Preferred orthographic standard or reference: *[Caroline to specify]*
-- [ ] Accepted regional variety: *[Caroline to specify]*
-- [ ] Any specific vocabulary preferences or exclusions: *[Caroline to specify]*
+The following conventions apply:
 
-**What is confirmed:**
-- Preserve natural spelling. Do not simplify or anglicise Lingala words to make them easier to type.
-- Do not invent spellings. If you are unsure how to spell a word, flag it for Caroline's review.
-- NFC Unicode normalisation is applied automatically by the validator. You do not need to worry about this.
-
----
+- Use natural Lingala as spoken and understood in Kinshasa.
+- Follow consistent, recognised Kinshasa Lingala spelling.
+- Use the ordinary Latin alphabet (A-Z) commonly used when writing Lingala in everyday communication.
+- Do not add tone marks unnecessarily.
+- Do not invent spellings or translate English expressions word for word.
+- Use familiar vocabulary and natural sentence structures.
+- Keep spelling consistent across the dataset.
+- Flag unfamiliar expressions for Caroline's review.
+- NFC Unicode normalisation is applied automatically by the validator.
 
 ## 6. French code-switching
 
-**⚠ PENDING CONFIRMATION — Caroline (T07-A) must confirm the team's approved code-switching convention.**
+French code-switching is permitted when it reflects natural everyday speech in Kinshasa.
 
-Lingala speakers frequently mix French words into everyday speech. The team needs to decide:
+The following rules apply:
 
-- [ ] Whether French code-switching is permitted in contributed sentences.
-- [ ] If permitted, which French words or patterns are acceptable.
-- [ ] How to mark or handle code-switched tokens in the dataset.
-
-**Until Caroline confirms the convention:**
-- Write primarily in Lingala.
-- If a French word feels completely natural and unavoidable in context, you may include it, but flag the sentence clearly in your submission notes so Caroline can review it.
-- Do not inject French words artificially to increase variety.
-
----
+- Sentences should remain primarily in Lingala.
+- French words may be included when they are naturally used in everyday conversation.
+- Do not insert French words artificially just to increase vocabulary variety.
+- Preserve the original meaning of code-switched expressions.
+- Flag sentences containing French expressions for linguistic review.
+- Caroline (T07-A) will review their naturalness and consistency.
 
 ## 7. Avoiding personal and identifying information
 

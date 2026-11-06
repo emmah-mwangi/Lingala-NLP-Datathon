@@ -23,16 +23,27 @@ The ten supported labels are:
 
 ## 2. Primary language and spelling conventions
 
-All contributed sentences should be written in natural Lingala.
+The reference variety for this project is Kinshasa Lingala (Democratic Republic of Congo).
 
 Guidelines:
-- Use words and expressions that Lingala speakers commonly understand.
-- Keep the original meaning of the sentence.
-- Avoid unnecessary English or Kiswahili words.
-- Use consistent spelling throughout the dataset.
-- Use correct accents where they are part of the chosen spelling.
-- Avoid sentences that sound like direct translations from English.
-- Ask a fluent Lingala reviewer to check unfamiliar expressions.
+
+Use natural Lingala as spoken and understood in Kinshasa.
+
+Use ordinary Latin letters (A-Z), without adding special characters or unnecessary diacritics.
+
+Use familiar words and expressions from everyday communication.
+
+Keep spelling consistent throughout the dataset.
+
+French code-switching is allowed when it sounds natural in everyday Kinshasa conversation.
+
+Sentences should remain primarily in Lingala.
+
+Avoid unnecessary English or Kiswahili words.
+
+Avoid sentences that sound like direct translations from English.
+
+Ask the Language and Documentation Lead to review unfamiliar expressions.
 
 ## 3. Positive examples for each label
 
