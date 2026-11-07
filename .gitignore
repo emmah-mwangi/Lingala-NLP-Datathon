@@ -22,6 +22,10 @@ secrets.toml
 data/raw/
 data/private/
 
+# Incoming batch drops and flagged review files (working files, not for Git)
+data/incoming/*.csv
+data/review/*.csv
+
 # Private source log, consent records and volunteer identity evidence
 # Never commit anything under private/ to any public or shared repository
 private/
