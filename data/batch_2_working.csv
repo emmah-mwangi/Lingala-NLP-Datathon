@@ -1,0 +1,81 @@
+label,text,english_meaning,review_status
+weather_query,Mbula ekobeta na ngonga nini?,What time will it rain?,reviewed_by_language_lead
+weather_query,Mbula ekobeta mikolo boni?,For how many days will it rain?,reviewed_by_language_lead
+weather_query,E zali na likama ya mopepe makasi?,Is there a risk of strong winds?,reviewed_by_language_lead
+weather_query,Nakoki kobima sans parapluie?,Can I go out without an umbrella?,reviewed_by_language_lead
+weather_query,Température ya butu ekozala boni?,What will the night temperature be?,reviewed_by_language_lead
+weather_query,Na ntongo malili ekozala mingi?,Will it be very cold in the morning?,reviewed_by_language_lead
+weather_query,Mbula ekobeta na eteni nini ya engumba?,Which part of the city will get rain?,reviewed_by_language_lead
+weather_query,Météo ya suka ya poso ezali ndenge nini?,What is the weekend forecast?,reviewed_by_language_lead
+datetime_query,Tokomi na ngonga nini sikoyo?,What time is it now?,reviewed_by_language_lead
+datetime_query,Mokolo ya lelo ezali mokolo ya boni na sanza?,What date is today?,reviewed_by_language_lead
+datetime_query,Mokolo nini ekozala lobi?,What day will tomorrow be?,reviewed_by_language_lead
+datetime_query,Posó ekosila mokolo nini?,What day does the week end?,reviewed_by_language_lead
+datetime_query,Lelo ezali mokolo ya mosala to ya bopemi?,Is today a working day or a rest day?,reviewed_by_language_lead
+datetime_query,Sanza nini ekolanda oyo?,Which month comes after this one?,reviewed_by_language_lead
+datetime_query,Mobu oyo ekosila mokolo nini?,What day will this year end?,reviewed_by_language_lead
+datetime_query,Tokomi na mobu nini?,What year is it?,reviewed_by_language_lead
+alarm_set,Lamusa ngai na ngonga ya motoba.,Wake me up at six.,reviewed_by_language_lead
+alarm_set,Tya alarme mpo na ngonga ya libwa.,Set an alarm for nine.,reviewed_by_language_lead
+alarm_set,Lamusa ngai na ntongo ya mokolo ya yambo.,Wake me up on Monday morning.,reviewed_by_language_lead
+alarm_set,Tya alarme ya miniti zomi.,Set an alarm for ten minutes.,reviewed_by_language_lead
+alarm_set,Nakolinga alarme mpo na ngonga ya kolongwa.,I want an alarm for departure time.,reviewed_by_language_lead
+alarm_set,Lamusa ngai liboso ete likita ebanda.,Wake me before the meeting starts.,reviewed_by_language_lead
+alarm_set,Tya alarme mpo na ngonga ya kopema.,Set an alarm for rest time.,reviewed_by_language_lead
+alarm_set,Lamusa ngai na ngonga ya nsambo na miniti ntuku misato.,Wake me at 7:30.,reviewed_by_language_lead
+calendar_set,Koma rendez-vous na calendrier na ngai.,Add an appointment to my calendar.,reviewed_by_language_lead
+calendar_set,Tya likita na calendrier mpo na mokolo ya mibale.,Schedule a meeting for Tuesday.,reviewed_by_language_lead
+calendar_set,Bomba mokolo ya mbotama ya mama na calendrier.,Save my mother's birthday in the calendar.,reviewed_by_language_lead
+calendar_set,Koma rendez-vous ya monganga na mokolo ya mitano.,Add a doctor's appointment on Friday.,reviewed_by_language_lead
+calendar_set,Tya rappel mpo na kofuta facture na suka ya sanza.,Schedule a reminder to pay the bill at the end of the month.,reviewed_by_language_lead
+calendar_set,Koma formation na calendrier na ngai.,Add training to my calendar.,reviewed_by_language_lead
+calendar_set,Bomba date ya examen na calendrier.,Save the exam date in the calendar.,reviewed_by_language_lead
+calendar_set,Tya rencontre na calendrier na ngonga ya zomi.,Schedule a meeting in the calendar at ten.,reviewed_by_language_lead
+calendar_query,Rendez-vous na ngai ya lobi ekozala na ngonga nini?,What time is my appointment tomorrow?,reviewed_by_language_lead
+calendar_query,Likita na ngai ekobanda na ngonga nini?,What time does my meeting start?,reviewed_by_language_lead
+calendar_query,Mokolo nini natia rendez-vous ya monganga?,On which day did I schedule the doctor's appointment?,reviewed_by_language_lead
+calendar_query,Calendrier na ngai ezali na makambo nini mpo na sanza ekoya?,What events are on my calendar next month?,reviewed_by_language_lead
+calendar_query,Examen na ngai ezali mokolo nini?,What day is my exam?,reviewed_by_language_lead
+calendar_query,Nakokutana na nani na calendrier mpo na mokolo ya lelo?,Who am I scheduled to meet today?,reviewed_by_language_lead
+calendar_query,Est-ce que likita mosusu ekozala na nsima ya midi?,Will there be another meeting after midday?,reviewed_by_language_lead
+calendar_query,Mokolo nini ezali na programme ya mosala?,Which day has a work event scheduled?,reviewed_by_language_lead
+lists_createoradd,Sala liste ya ba films oyo nalingi kotala.,Create a list of films I want to watch.,reviewed_by_language_lead
+lists_createoradd,Bakisa mai na liste ya biloko ya kosomba.,Add water to the shopping list.,reviewed_by_language_lead
+lists_createoradd,Sala liste ya ba malewa oyo nalingi komeka.,Create a list of restaurants I want to try.,reviewed_by_language_lead
+lists_createoradd,Koma ba livres oyo nasengeli kotanga na liste.,Write the books I need to read on a list.,reviewed_by_language_lead
+lists_createoradd,Bakisa rendez-vous na liste ya makambo ya kosala.,Add the appointment to the to-do list.,reviewed_by_language_lead
+lists_createoradd,Koma biloko ya voyage na liste.,Write the travel items on a list.,reviewed_by_language_lead
+lists_createoradd,Sala liste ya ba chansons oyo nalingi koyoka.,Create a list of songs I want to listen to.,reviewed_by_language_lead
+lists_createoradd,Bakisa kombo ya école na liste ya ba écoles.,Add the school's name to the school list.,reviewed_by_language_lead
+lists_query,Ba films nini ezali na liste na ngai?,Which films are on my list?,reviewed_by_language_lead
+lists_query,Ba livres nini nasengeli kotanga?,Which books should I read?,reviewed_by_language_lead
+lists_query,Mai ezali na liste ya biloko ya kosomba?,Is water on the shopping list?,reviewed_by_language_lead
+lists_query,Liste ya ba malewa na ngai ezali wapi?,Where is my restaurant list?,reviewed_by_language_lead
+lists_query,Rendez-vous nini natyaki na liste ya makambo ya kosala?,Which appointments did I add to my to-do list?,reviewed_by_language_lead
+lists_query,Biloko nini nakomaki mpo na voyage?,Which items did I write down for the trip?,reviewed_by_language_lead
+lists_query,Ba chansons nini ezali na liste na ngai?,Which songs are on my list?,reviewed_by_language_lead
+lists_query,Ba écoles nini ezali na liste na ngai?,Which schools are on my list?,reviewed_by_language_lead
+play_music,Tya miziki ya rumba.,Play rumba music.,reviewed_by_language_lead
+play_music,Tya nzembo ya bana.,Play a children's song.,reviewed_by_language_lead
+play_music,Tya ba nzembo ya kosambela.,Play prayer songs.,reviewed_by_language_lead
+play_music,Nakolinga koyoka miziki ya Nzambe.,I want to listen to gospel music.,reviewed_by_language_lead
+play_music,Tya nzembo oyo nalingaka mingi.,Play my favourite song.,reviewed_by_language_lead
+play_music,Yembela ngai miziki ya kokitisa motema.,Play relaxing music for me.,reviewed_by_language_lead
+play_music,Tya miziki ya mabina.,Play dance music.,reviewed_by_language_lead
+play_music,Nakolinga koyoka miziki na chombo na ngai.,I want to listen to music on my device.,reviewed_by_language_lead
+news_query,Bato bazali koloba nini na ba sango ya lelo?,What are people saying in today's news?,reviewed_by_language_lead
+news_query,Sango ya sika ezali nini?,What is the latest news?,reviewed_by_language_lead
+news_query,Nini ezali koleka na mokili?,What is happening in the world?,reviewed_by_language_lead
+news_query,Sango nini ya sika ezali na Kinshasa?,What is the latest news in Kinshasa?,reviewed_by_language_lead
+news_query,Nini esalemi na masolo ya politiki?,What has happened in politics?,reviewed_by_language_lead
+news_query,Sango ya sport ezali nini?,What is the sports news?,reviewed_by_language_lead
+news_query,Nini esalemi lelo na mboka?,What happened in the country today?,reviewed_by_language_lead
+news_query,Nakoki koyoka sango ya lelo?,Can I listen to today's news?,reviewed_by_language_lead
+qa_definition,Bokeseni ezali nini kati na climat na météo?,What is the difference between climate and weather?,reviewed_by_language_lead
+qa_definition,Intelligence artificielle elakisi nini?,What does artificial intelligence mean?,reviewed_by_language_lead
+qa_definition,Démocratie elakisi nini?,What does democracy mean?,reviewed_by_language_lead
+qa_definition,Respect elakisi nini?,What does respect mean?,reviewed_by_language_lead
+qa_definition,Changement climatique ezali nini?,What is climate change?,reviewed_by_language_lead
+qa_definition,Constitution ezali nini?,What is a constitution?,reviewed_by_language_lead
+qa_definition,Culture elakisi nini?,What does culture mean?,reviewed_by_language_lead
+qa_definition,Inflation elakisi nini?,What does inflation mean?,reviewed_by_language_lead
