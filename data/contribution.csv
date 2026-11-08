@@ -1,0 +1,4 @@
+record_id,language,text,label,source_dataset,source_version,source_record_id,source_url,source_method,licence_or_permission,contributor_code,reviewer_code,review_status,group_id,split
+T07-001,ln,Tala mbula lelo.,weather_query,team07_lingala_v1,1.0,T07-001,not_applicable,original_human,team_permission,T07-V1,T07-A,independently_reviewed,,
+T07-002,ln,Ngonga ezali ngonga nini?,datetime_query,team07_lingala_v1,1.0,T07-002,not_applicable,original_human,team_permission,T07-V2,T07-A,independently_reviewed,,
+T07-003,ln,Bongisa kengele na ngonga motoba.,alarm_set,team07_lingala_v1,1.0,T07-003,not_applicable,original_human,team_permission,T07-V3,T07-A,independently_reviewed,,
