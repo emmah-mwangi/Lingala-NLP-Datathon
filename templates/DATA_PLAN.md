@@ -6,8 +6,7 @@ Team number: 7
 Team name: Datalynk
 Track: A - Intent Classification
 Primary language: Lingala
-Language variety: To be confirmed with the team's Lingala reviewers.
-
+Language variety: Kinshasa Lingala (Democratic Republic of Congo).
 ## 2. Reviewer and capacity
 
 The team will work with Lingala-speaking volunteers to check sentence quality and annotation accuracy.
@@ -31,7 +30,7 @@ All newly collected sentences must be checked for natural Lingala expressions an
 
 Contribution type: Human-authored Lingala examples and reviewed human-localised sentences.
 
-Minimum target: 250 accepted examples.
+Minimum target: 250 accepted examples. This is the team's target and has not yet been achieved.
 
 Each of the ten intent labels must have at least 25 accepted examples.
 
