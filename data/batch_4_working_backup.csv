@@ -1,0 +1,48 @@
+label,text,english_meaning,review_status
+weather_query,"Mbula ekobanda na ngonga nini lelo?","What time will the rain start today?",reviewed_by_language_lead
+weather_query,"Lobi na butu malili ekozala?","Will it be cold tomorrow night?",reviewed_by_language_lead
+weather_query,"Mopepe ekopela makasi na mpokwa?","Will the wind blow strongly in the evening?",reviewed_by_language_lead
+weather_query,"Na mikolo oyo, moyi ekobima mingi?","Will it be very sunny in the coming days?",reviewed_by_language_lead
+datetime_query,"Lobi ekozala mokolo ya boni?","What day will tomorrow be?",reviewed_by_language_lead
+datetime_query,"Sanza oyo ezali na mikolo boni?","How many days are in this month?",reviewed_by_language_lead
+datetime_query,"Tokokoma na sanza ya sika mokolo nini?","On what day will we enter the new month?",reviewed_by_language_lead
+datetime_query,"Sikoyo tozali na ngonga ya boni?","What time is it now?",reviewed_by_language_lead
+alarm_set,"Tya alarme na ngonga ya libwa ya butu.","Set an alarm for 9 p.m.",reviewed_by_language_lead
+alarm_set,"Tya ngai alarme mpo na kolamuka na ngonga ya minei ya tongo.","Set an alarm to wake me up at 4 a.m.",reviewed_by_language_lead
+alarm_set,"Alarme na ngai ebeta lisusu sima ya miniti zomi.","Make my alarm ring again after ten minutes.",reviewed_by_language_lead
+alarm_set,"Bomba alarme mpo na mokolo ya lomingo na ngonga ya sambo.","Set an alarm for Sunday at 7.",reviewed_by_language_lead
+calendar_set,"Koma rendez-vous na ngai ya mokolo ya mibale na calendrier.","Add my Monday appointment to the calendar.",reviewed_by_language_lead
+calendar_set,"Tya likita na ngai ya mosala na calendrier mpo na lobi.","Put my work meeting on the calendar for tomorrow.",reviewed_by_language_lead
+calendar_set,"Koma rendez-vous na monganga na ngonga ya misato na calendrier.","Add my doctor's appointment at 3 to the calendar.",reviewed_by_language_lead
+calendar_set,"Tya mokolo ya mbotama ya mama na calendrier mpo na mokolo ya zomi na mitano.","Add Mum's birthday to the calendar for the 15th.",reviewed_by_language_lead
+calendar_set,"Koma likita ya libota na calendrier na ngai mpo na poso oyo ezali koya.","Add the family meeting to my calendar for next week.",reviewed_by_language_lead
+calendar_query,"Nazali na rendez-vous mokolo ya lomingo?","Do I have an appointment on Sunday?",reviewed_by_language_lead
+calendar_query,"Na sanza oyo, nazali na makita boni?","How many meetings do I have this month?",reviewed_by_language_lead
+calendar_query,"Rendez-vous na ngai ya nsima ekozala mokolo nini?","What day is my next appointment?",reviewed_by_language_lead
+calendar_query,"Lelo nazali na likita na ngonga nini?","What time is my meeting today?",reviewed_by_language_lead
+calendar_query,"Na poso ekoya, nazali na rendez-vous nini?","What appointments do I have next week?",reviewed_by_language_lead
+lists_createoradd,"Sala liste ya biloko ya kosala na ndako.","Create a list of things to do at home.",reviewed_by_language_lead
+lists_createoradd,"Bakisa sukali na liste ya biloko ya kosomba.","Add sugar to the shopping list.",reviewed_by_language_lead
+lists_createoradd,"Koma bankombo ya ba films oyo nalingi kotala na liste.","Write the names of films I want to watch on a list.",reviewed_by_language_lead
+lists_createoradd,"Sala liste ya biloko oyo nasengeli komema na mobembo.","Create a list of things I need to take on a trip.",reviewed_by_language_lead
+lists_createoradd,"Bakisa kombo ya monganga na liste ya bato ya kobenga.","Add the doctor's name to the contact list.",reviewed_by_language_lead
+lists_query,"Lakisa ngai liste ya biloko ya kosala na ndako.","Show me the list of things to do at home.",reviewed_by_language_lead
+lists_query,"Nasengeli kosomba biloko nini lisusu?","What else do I need to buy?",reviewed_by_language_lead
+lists_query,"Bankombo nini ezali na liste ya bato ya kobenga?","Which names are on the contact list?",reviewed_by_language_lead
+lists_query,"Liste ya biloko ya mobembo ezali wapi?","Where is the travel items list?",reviewed_by_language_lead
+lists_query,"Nakomaki ba films nini na liste ya oyo nalingi kotala?","Which films did I write on my watchlist?",reviewed_by_language_lead
+play_music,"Tya miziki ya Koffi Olomide.","Play Koffi Olomide's music.",reviewed_by_language_lead
+play_music,"Tya ngai miziki ya rumba ya Kinshasa.","Play Kinshasa rumba music for me.",reviewed_by_language_lead
+play_music,"Nakolinga koyoka miziki ya kimia.","I would like to listen to relaxing music.",reviewed_by_language_lead
+play_music,"Tya loyembo ya Fally Ipupa oyo eyebani mingi.","Play a popular song by Fally Ipupa.",reviewed_by_language_lead
+play_music,"Tika miziki ekoba kobeta.","Let the music keep playing.",reviewed_by_language_lead
+news_query,"Sango nini ya sika ezali na mokili?","What is the latest news around the world?",reviewed_by_language_lead
+news_query,"Nini ezali koleka na Kinshasa lelo?","What is happening in Kinshasa today?",reviewed_by_language_lead
+news_query,"Pesa ngai sango ya sika ya masano.","Give me the latest sports news.",reviewed_by_language_lead
+news_query,"Sango nini ya sika ezali na makambo ya politiki?","What is the latest political news?",reviewed_by_language_lead
+news_query,"Nini ya sika ezali koleka na mboka na biso?","What is happening in our country?",reviewed_by_language_lead
+qa_definition,"Boyebi ya bato elingi koloba nini?","What does general knowledge mean?",reviewed_by_language_lead
+qa_definition,"Internet ezali nini mpe esalaka ndenge nini?","What is the internet and how does it work?",reviewed_by_language_lead
+qa_definition,"Bokeseni ezali nini kati na ordinateur mpe telefone?","What is the difference between a computer and a phone?",reviewed_by_language_lead
+qa_definition,"Mpo na nini bato basalelaka ba applications?","Why do people use applications?",reviewed_by_language_lead
+qa_definition,"Intelligence artificielle ezali nini?","What is artificial intelligence?",reviewed_by_language_lead
