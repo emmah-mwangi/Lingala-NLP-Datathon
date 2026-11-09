@@ -1,0 +1,41 @@
+label,text,english_meaning,review_status
+alarm_set,Tya alarme na ngonga ya motoba ya tongo.,Set an alarm for six in the morning.,reviewed_by_language_lead
+alarm_set,Nalingi alarme ebeta na ngonga ya sambo.,I want the alarm to ring at seven.,reviewed_by_language_lead
+alarm_set,Tya ngai alarme ya kolamuka lobi na ngonga ya mitano.,Set an alarm to wake me up tomorrow at five.,reviewed_by_language_lead
+alarm_set,Longola alarme oyo natyaki mpo na ngonga ya mwambe.,Cancel the alarm I set for eight o'clock.,reviewed_by_language_lead
+calendar_set,Tya rendez-vous na calendrier na ngai mpo na mokolo ya mibale.,Add an appointment to my calendar for Tuesday.,reviewed_by_language_lead
+calendar_set,Koma likita na ngai ya lobi na calendrier.,Put tomorrow's meeting in my calendar.,reviewed_by_language_lead
+calendar_set,Nakokutana na monganga mokolo ya mitano tya yango na calendrier.,I will meet the doctor on Thursday; add it to the calendar.,reviewed_by_language_lead
+calendar_set,Tya rendez-vous na ngai ya mosala na ngonga ya zomi na moko.,Add my work appointment at eleven o'clock.,reviewed_by_language_lead
+calendar_query,"Na mokolo ya misato, nazali na rendez-vous?",Do I have an appointment on Wednesday?,reviewed_by_language_lead
+calendar_query,"Na poso oyo, nazali na makita nini?",What meetings do I have this week?,reviewed_by_language_lead
+calendar_query,Mokolo nini nakokutana na monganga?,Which day am I meeting the doctor?,reviewed_by_language_lead
+calendar_query,Ezali na likita mosusu oyo natye na calendrier na ngai?,Is there another meeting I added to my calendar?,reviewed_by_language_lead
+lists_createoradd,Sala liste ya biloko oyo nasengeli kosomba.,Create a list of things I need to buy.,reviewed_by_language_lead
+lists_createoradd,Bakisa mapa na liste ya biloko ya kosomba.,Add bread to the shopping list.,reviewed_by_language_lead
+lists_createoradd,Koma bankombo ya baninga oyo nabengi na liste.,Write the names of friends I should call in a list.,reviewed_by_language_lead
+lists_createoradd,Bakisa loso na liste ya biloko ya kolya.,Add rice to the food list.,reviewed_by_language_lead
+lists_query,Biloko nini ezali na liste ya kosomba?,What items are on the shopping list?,reviewed_by_language_lead
+lists_query,Nani azali na liste ya bato oyo nasengeli kobenga?,Who is on the list of people I need to call?,reviewed_by_language_lead
+lists_query,Lakisa ngai liste ya biloko oyo nakomaki.,Show me the list of items I wrote down.,reviewed_by_language_lead
+lists_query,Nasilaki kosomba biloko nini na liste?,Which items on the list have I already bought?,reviewed_by_language_lead
+play_music,Yembela ngai miziki ya Fally Ipupa.,Play Fally Ipupa's music for me.,reviewed_by_language_lead
+play_music,Tya miziki ya rumba ya kala.,Play old-school rumba music.,reviewed_by_language_lead
+play_music,Nalingi koyoka ka mwa miziki boye.,I feel like listening to some music.,reviewed_by_language_lead
+play_music,Tya loyembo oyo nalingaka mingi.,Play the song I like most.,reviewed_by_language_lead
+news_query,Nini ya sika ezali koleka na Kinshasa?,What is happening in Kinshasa?,reviewed_by_language_lead
+news_query,Sango ya lelo ezali nini?,What is today's news?,reviewed_by_language_lead
+news_query,Nini ya sika ezali koleka na mboka?,What is happening in the country?,reviewed_by_language_lead
+news_query,Pesa ngai sango ya sika na oyo etali politiki.,Give me the latest political news.,reviewed_by_language_lead
+qa_definition,Maloba oyo elingi koloba nini?,What do these words mean?,reviewed_by_language_lead
+qa_definition,Bokeseni ezali nini kati na mayele mpe boyebi?,What is the difference between intelligence and knowledge?,reviewed_by_language_lead
+qa_definition,Mpo na nini bato basalelaka telefone ya smartphone?,Why do people use smartphones?,reviewed_by_language_lead
+qa_definition,Boyokani ezali nini?,What is cooperation?,reviewed_by_language_lead
+weather_query,Lobi na tongo moyi ekobima?,Will the sun come out tomorrow morning?,reviewed_by_language_lead
+weather_query,Na mpokwa mapata ekozala mingi?,Will it be very cloudy in the evening?,reviewed_by_language_lead
+weather_query,Molunge ekosila na mikolo oyo?,Will the hot weather ease in the coming days?,reviewed_by_language_lead
+weather_query,Nakoki kobima lelo kozanga kokutana na mbula?,Can I go out today without getting caught in the rain?,reviewed_by_language_lead
+datetime_query,Lelo mokolo ya nini?,What day is it today?,reviewed_by_language_lead
+datetime_query,Sikoyo ngonga boni?,What time is it now?,reviewed_by_language_lead
+datetime_query,Tokomi na sanza nini?,Which month are we in?,reviewed_by_language_lead
+datetime_query,Lobi ekozala mokolo ya nini?,What day will it be tomorrow?,reviewed_by_language_lead
