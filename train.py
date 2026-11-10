@@ -10,7 +10,7 @@ from core import labels,fingerprint,classification_score,slot_memory,semantic_sc
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--data',default='data/contribution.csv');p.add_argument('--track',choices=['intent','sentiment','semantic'],default='intent');p.add_argument('--practice',action='store_true');a=p.parse_args()
     df=check(a.data,a.practice,a.track);tr=df[df.split.eq('train')];dev=df[df.split.eq('dev')]
-    model=make_pipeline(TfidfVectorizer(analyzer='char',ngram_range=(2,5)),LogisticRegression(max_iter=1000,random_state=42));model.fit(tr.text,tr.label)
+    model=make_pipeline(TfidfVectorizer(analyzer='char_wb',ngram_range=(2,4)),LogisticRegression(C=5.0,max_iter=1000,random_state=42));model.fit(tr.text,tr.label)
     dummy=DummyClassifier(strategy='most_frequent').fit(tr.text,tr.label)
     memory=slot_memory(tr) if a.track=='semantic' else {}
     pack={'model':model,'dummy':dummy,'language':df.language.iloc[0],'practice':a.practice,'track':a.track,'data_sha256':fingerprint(df),'slot_memory':memory}
