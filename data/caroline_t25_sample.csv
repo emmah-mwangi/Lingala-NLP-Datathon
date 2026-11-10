@@ -1,0 +1,51 @@
+record_id,label,text,split,contributor_code,reviewer_code,review_decision,issue_found,suggested_correction,review_notes
+T07-064,alarm_set,Tya alarme mpo na ngonga ya mitano na ndambo.,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-145,alarm_set,Lamusa ngai liboso ete likita ebanda.,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-065,alarm_set,Lamusa ngai na ngonga ya motoba ya mpokwa.,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-061,alarm_set,Tya alarme na ngonga ya libwa.,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-140,alarm_set,Lamusa ngai na ngonga ya motoba.,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-014,calendar_query,Mokolo nini nakokutana na monganga?,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-083,calendar_query,Likita na biso ekomi na ngonga nini?,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-157,calendar_query,Likita na ngai ekobanda na ngonga nini?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-080,calendar_query,Nazali na likita moko na ngai na mpokwa?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-159,calendar_query,Calendrier na ngai ezali na makambo nini mpo na sanza ekoya?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-008,calendar_set,Tya rendez-vous na calendrier na ngai mpo na mokolo ya mibale.,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-074,calendar_set,Tya rendez-vous na ngai ya mpokwa na kalandriye.,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-148,calendar_set,Koma rendez-vous na calendrier na ngai.,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-071,calendar_set,Tya bokutani na biso na kalandriye na ngonga ya zomi.,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-150,calendar_set,Bomba mokolo ya mbotama ya mama na calendrier.,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-056,datetime_query,Sanza oyo ezali na mikolo boni?,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-132,datetime_query,Tokomi na ngonga nini sikoyo?,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-057,datetime_query,Ngonga ya midi ekomi?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-053,datetime_query,Tozali na sanza nini?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-134,datetime_query,Mokolo nini ekozala lobi?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-016,lists_createoradd,Sala liste ya biloko oyo nasengeli kosomba.,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-089,lists_createoradd,Bakisa kombo ya monganga na liste ya bato ya kobenga.,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-164,lists_createoradd,Sala liste ya ba films oyo nalingi kotala.,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-088,lists_createoradd,Fungola liste ya biloko oyo nasengeli kosomba.,train,T07-A,T07-A,needs_label_review,Label mismatch,lists_query,Sentence asks to open an existing list; suggest changing label from lists_createoradd to lists_query. Lingala wording is natural.
+T07-167,lists_createoradd,Koma ba livres oyo nasengeli kotanga na liste.,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-094,lists_query,Nasengelaki kosomba biloko nini?,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-099,lists_query,Biloko nini natyaki na liste ya ndako?,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-172,lists_query,Ba films nini ezali na liste na ngai?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-093,lists_query,Lakisa ngai biloko nyonso oyo ezali na liste na ngai.,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-174,lists_query,Mai ezali na liste ya biloko ya kosomba?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-029,news_query,Sango ya lelo ezali nini?,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-115,news_query,Lakisa ngai bansango ya politiki ya lelo.,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-188,news_query,Bato bazali koloba nini na ba sango ya lelo?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-112,news_query,Nini esalemi na mokili mobimba?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-190,news_query,Nini ezali koleka na mokili?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-024,play_music,Yembela ngai miziki ya Fally Ipupa.,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-107,play_music,Tya nzembo mosusu ya Lingala.,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-180,play_music,Tya miziki ya rumba.,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-103,play_music,Tya nzembo ya Fally Ipupa.,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-183,play_music,Nakolinga koyoka miziki ya Nzambe.,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-116,qa_definition,Internet ezali nini?,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-120,qa_definition,Bokeseni kati na ordinateur na tablette ezali nini?,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-196,qa_definition,Bokeseni ezali nini kati na climat na météo?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-121,qa_definition,Virus ya ordinateur esalaka nini?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-198,qa_definition,Démocratie elakisi nini?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-037,weather_query,Na mpokwa mapata ekozala mingi?,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-051,weather_query,Banzela ekozala na mai soki mbula ebeti?,dev,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-124,weather_query,Mbula ekobeta na ngonga nini?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-048,weather_query,Mpepo ezali makasi lelo?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
+T07-126,weather_query,E zali na likama ya mopepe makasi?,train,T07-A,T07-A,accepted,None,,Natural Kinshasa Lingala; meaning confirmed by language lead.
