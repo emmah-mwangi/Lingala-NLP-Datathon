@@ -18,6 +18,10 @@ artifacts/
 secrets.toml
 .streamlit/secrets.toml
 
+# Authentication database (contains user credentials)
+private/users.db
+private/*.db
+
 # Raw / uncleared data (keep permission evidence private)
 data/raw/
 data/private/
