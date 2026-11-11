@@ -1,11 +1,19 @@
 """
-Streamlit app — Team 07 Datalynk | Lingala Intent Classifier
+Lingala Intent Classifier — Team 07 Datalynk
+Strathmore NLP Hub Datathon 2026 | Track A — Intent Classification
 
 Entry point:
     python -m streamlit run app.py
 
-Professional SaaS-style interface with working navigation, authentication,
-clean AI workspace, and zero decorative emojis.
+A working NLP system that accepts Lingala text and returns a real predicted
+intent using the project's trained character-TF-IDF + logistic regression model.
+
+Public routes: landing, login, register, classifier (guest-accessible).
+Authenticated workspace: overview, classifier (prominent), intent boundary lab,
+dataset explorer, model performance, error analysis, research information, logout.
+
+No raw JavaScript is rendered as content. All predictions come from the trained
+model pack; no demonstration, hardcoded or fabricated scores are shown.
 """
 
 from __future__ import annotations
@@ -26,24 +34,16 @@ from nlp.config import (
     TEAM_NUMBER,
     artifact_dir,
 )
-from nlp.data_loader import load_dev_metrics, load_test_predictions
+from nlp.data_loader import load_dev_metrics, load_test_predictions, load_model_pack
 from nlp.predictor import predict
 from nlp.summary import load_contribution, summary
 from nlp.ui import build_disclaimer, confidence_band, format_probability
 
 TRACK = "intent"
 
-st.set_page_config(
-    page_title="Lingala Intent Classifier | Team 07 Datalynk",
-    page_icon="🌍",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
-
-
-# ============================================================================
-# AUTHENTICATION MODULE
-# ============================================================================
+# ---------------------------------------------------------------------------
+# Authentication helpers
+# ---------------------------------------------------------------------------
 
 def init_auth() -> None:
     """Initialize authentication database."""
@@ -93,9 +93,9 @@ def guest_login() -> None:
     st.session_state["username"] = "guest"
 
 
-# ============================================================================
-# DATA & HELPERS
-# ============================================================================
+# ---------------------------------------------------------------------------
+# Data & helpers
+# ---------------------------------------------------------------------------
 
 @st.cache_data
 def get_taxonomy() -> pd.DataFrame:
@@ -228,7 +228,7 @@ def intent_name(label: str) -> str:
 
 
 def _run_prediction(text: str, pack: dict[str, Any]) -> dict[str, Any] | None:
-    """Run prediction and return result with probabilities."""
+    """Run prediction and return result with real probabilities."""
     try:
         result = predict(text, pack)
         proba = None
@@ -249,130 +249,105 @@ def _run_prediction(text: str, pack: dict[str, Any]) -> dict[str, Any] | None:
         return None
 
 
-# ============================================================================
-# DESIGN SYSTEM & STYLES
-# ============================================================================
+# ---------------------------------------------------------------------------
+# Design system & styles
+# ---------------------------------------------------------------------------
 
 def inject_css() -> None:
-    """Inject custom CSS for professional SaaS-style design."""
+    """Inject custom CSS for a clean, minimalist design system."""
     st.markdown(
         """
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-        
+
         :root {
-            --bg-primary: #F8FAFC;
+            --bg-primary: #F7F9FB;
             --bg-white: #FFFFFF;
-            --text-primary: #172033;
-            --text-secondary: #64748B;
-            --border-color: #E6EAF0;
-            --accent-teal: #159C8C;
-            --accent-teal-dark: #128576;
-            --navy-primary: #172B45;
-            --navy-secondary: #25445F;
-            --success: #16865B;
-            --warning: #D99A26;
-            --error: #C94C4C;
+            --text-primary: #1A2B3C;
+            --text-secondary: #5B6B7B;
+            --border-color: #DCE3E9;
+            --accent-teal: #0E7C7B;
+            --accent-teal-dark: #0B5F5E;
+            --navy-primary: #142B3B;
+            --success: #17845D;
+            --warning: #C18B32;
+            --error: #C64B4B;
         }
-        
+
         html, body, [class*="css"] {
             font-family: 'Inter', sans-serif;
         }
-        
+
         .stApp {
             background: var(--bg-primary);
             color: var(--text-primary);
         }
-        
-        /* Navigation */
+
         [data-testid="stSidebar"] {
             background: var(--bg-white);
             border-right: 1px solid var(--border-color);
         }
-        
-        [data-testid="stSidebar"] * {
-            color: var(--text-primary);
-        }
-        
-        [data-testid="stSidebar"] hr {
-            border-color: var(--border-color);
-        }
-        
+
         /* Branding */
         .brand-block {
-            padding: 1.5rem 1rem 2rem 1rem;
+            padding: 1.25rem 1rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
         }
-        
+
         .brand-logo {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             font-weight: 800;
             color: var(--navy-primary);
             letter-spacing: -0.02em;
             margin-bottom: 0.25rem;
         }
-        
+
         .brand-sub {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-secondary);
             font-weight: 500;
         }
-        
+
         .brand-badge {
             display: inline-block;
-            padding: 0.35rem 0.75rem;
+            padding: 0.3rem 0.7rem;
             border-radius: 999px;
-            background: #E0F2F1;
+            background: #E3F2F2;
             color: var(--accent-teal);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-top: 1rem;
+            margin-top: 0.75rem;
         }
-        
+
         /* Buttons */
         .stButton > button {
             border-radius: 8px;
             font-weight: 600;
             padding: 0.6rem 1.25rem;
             transition: all 0.2s ease;
+            border: 1px solid var(--border-color);
+            background: var(--bg-white);
+            color: var(--text-primary);
         }
-        
+
         .stButton > button[kind="primary"] {
             background: var(--accent-teal);
             color: var(--bg-white);
             border: none;
-            box-shadow: 0 2px 8px rgba(21, 156, 140, 0.25);
         }
-        
+
         .stButton > button[kind="primary"]:hover {
             background: var(--accent-teal-dark);
-            box-shadow: 0 4px 12px rgba(21, 156, 140, 0.35);
-            transform: translateY(-1px);
         }
-        
-        .stButton > button[kind="secondary"] {
-            background: var(--bg-white);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-        }
-        
+
         .stButton > button[kind="secondary"]:hover {
             background: #F1F5F9;
             border-color: var(--text-secondary);
         }
-        
-        .stButton > button[kind="ghost"] {
-            background: transparent;
-            color: var(--text-secondary);
-            border: none;
-        }
-        
-        .stButton > button[kind="ghost"]:hover {
-            background: #F8FAFC;
-            color: var(--text-primary);
-        }
-        
+
         /* Cards */
         .card {
             background: var(--bg-white);
@@ -380,8 +355,9 @@ def inject_css() -> None:
             border-radius: 12px;
             padding: 1.5rem;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
         }
-        
+
         .card h3 {
             color: var(--navy-primary);
             margin-top: 0;
@@ -389,220 +365,90 @@ def inject_css() -> None:
             font-size: 1.125rem;
             font-weight: 700;
         }
-        
-        /* Hero section */
+
+        /* Hero */
         .hero {
-            background: linear-gradient(135deg, var(--navy-primary) 0%, var(--navy-secondary) 100%);
+            background: linear-gradient(135deg, var(--navy-primary) 0%, #1E4A5F 100%);
             color: var(--bg-white);
-            padding: 4rem 2rem;
-            border-radius: 24px;
-            margin-bottom: 3rem;
-            box-shadow: 0 10px 40px rgba(23, 43, 69, 0.15);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2.5rem;
         }
-        
+
         .hero h1 {
             margin: 0 0 1rem 0;
-            font-size: 3rem;
+            font-size: 2.75rem;
             font-weight: 800;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
+            line-height: 1.15;
         }
-        
+
         .hero p {
-            color: #CBD5E1;
+            color: #D8E2EC;
             font-size: 1.125rem;
             line-height: 1.6;
-            margin: 0;
+            margin: 0 0 1.5rem 0;
         }
-        
-        .hero-cta {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
-        
+
         /* Typography */
         h1, h2, h3, h4, h5, h6 {
             color: var(--navy-primary);
             font-weight: 700;
             line-height: 1.2;
         }
-        
-        h1 { font-size: 2.5rem; margin-bottom: 1rem; }
-        h2 { font-size: 2rem; margin-top: 2.5rem; margin-bottom: 1rem; }
-        h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; }
-        h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
-        
+
+        h1 { font-size: 2rem; margin-bottom: 1rem; }
+        h2 { font-size: 1.6rem; margin-top: 2rem; margin-bottom: 1rem; }
+        h3 { font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+
         p {
             color: var(--text-primary);
             line-height: 1.6;
             margin-bottom: 1rem;
         }
-        
-        /* Inputs */
+
         .stTextArea textarea, .stTextInput input {
             border-radius: 8px;
             border: 1px solid var(--border-color);
             padding: 0.75rem 1rem;
             font-size: 1rem;
         }
-        
-        .stTextArea textarea:focus, .stTextInput input:focus {
-            border-color: var(--accent-teal);
-            box-shadow: 0 0 0 3px rgba(21, 156, 140, 0.15);
-        }
-        
-        /* Tables */
-        .dataframe {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-        }
-        
-        .dataframe th {
-            background: #F8FAFC;
-            color: var(--text-primary);
-            font-weight: 600;
-            border-bottom: 2px solid var(--border-color);
-        }
-        
-        .dataframe td {
-            border-bottom: 1px solid var(--border-color);
-        }
-        
+
         /* Metrics */
         .metric-card {
             background: var(--bg-white);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 1.25rem;
             text-align: center;
         }
-        
+
         .metric-value {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 800;
             color: var(--navy-primary);
             line-height: 1;
         }
-        
+
         .metric-label {
             color: var(--text-secondary);
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             margin-top: 0.25rem;
         }
-        
+
         /* Badges */
         .badge {
             display: inline-block;
             padding: 0.25rem 0.6rem;
             border-radius: 6px;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 600;
+            margin-right: 0.4rem;
         }
-        
-        .badge-teal { background: #E0F2F1; color: var(--accent-teal); }
-        .badge-blue { background: #E3F2FD; color: #1976D2; }
-        .badge-warning { background: #FFF3E0; color: var(--warning); }
-        
-        /* Workflow steps */
-        .workflow {
-            display: flex;
-            gap: 2rem;
-            margin: 2rem 0;
-            flex-wrap: wrap;
-        }
-        
-        .workflow-step {
-            flex: 1;
-            min-width: 200px;
-            text-align: center;
-            padding: 1.5rem;
-            background: var(--bg-white);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-        }
-        
-        .workflow-icon {
-            font-size: 2rem;
-            margin-bottom: 0.75rem;
-            color: var(--accent-teal);
-        }
-        
-        .workflow-label {
-            font-weight: 600;
-            color: var(--navy-primary);
-        }
-        
-        .workflow-arrow {
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            align-self: center;
-        }
-        
-        /* Footer */
-        .footer {
-            margin-top: 4rem;
-            padding: 2rem 0;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-        
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .hero h1 { font-size: 2.5rem; }
-        }
-        
-        @media (max-width: 768px) {
-            .hero { padding: 2rem 1rem; }
-            .hero h1 { font-size: 2rem; }
-            .workflow { flex-direction: column; }
-            .workflow-arrow { display: none; }
-            h1 { font-size: 2rem; }
-            h2 { font-size: 1.5rem; }
-            .hero-cta { flex-direction: column; }
-            .hero-cta button { width: 100%; }
-        }
-        
-        @media (max-width: 480px) {
-            .hero h1 { font-size: 1.75rem; }
-            .workflow-step { padding: 1rem; }
-        }
-        
-        /* Navigation sidebar */
-        .nav-section {
-            margin-top: 1.5rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
-        }
-        
-        .nav-section-title {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            padding-left: 0.5rem;
-        }
-        
-        .nav-item {
-            padding: 0.5rem 0.75rem;
-            border-radius: 6px;
-            margin-bottom: 0.25rem;
-        }
-        
-        .nav-item:hover {
-            background: #F8FAFC;
-        }
-        
-        .nav-item.active {
-            background: #E0F2F1;
-            color: var(--accent-teal);
-            font-weight: 600;
-        }
-        
+
+        .badge-teal { background: #E3F2F2; color: var(--accent-teal); }
+        .badge-navy { background: #E8ECF1; color: var(--navy-primary); }
+        .badge-warning { background: #F7EEDB; color: var(--warning); }
+
         /* Result card */
         .result-card {
             background: var(--bg-white);
@@ -612,57 +458,27 @@ def inject_css() -> None:
             padding: 1.5rem;
             margin-top: 1.5rem;
         }
-        
+
         .result-card h4 {
             color: var(--accent-teal);
             margin-top: 0;
         }
-        
-        /* Practice warning */
-        .practice-warning {
-            background: #FFF3E0;
-            border: 1px solid var(--warning);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .practice-warning p {
-            margin: 0;
-            color: var(--warning);
-            font-weight: 500;
-        }
-        
-        /* Empty state */
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
+
+        /* Footer */
+        .footer {
+            margin-top: 3rem;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-color);
             color: var(--text-secondary);
+            font-size: 0.85rem;
         }
-        
-        .empty-state-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero { padding: 2rem 1rem; }
+            .hero h1 { font-size: 2rem; }
+            h1 { font-size: 1.75rem; }
         }
-        
-        /* Form validation */
-        .stError {
-            background: #FEF2F2;
-            border: 1px solid var(--error);
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 1rem 0;
-        }
-        
-        .stSuccess {
-            background: #F0FDF4;
-            border: 1px solid var(--success);
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 1rem 0;
-        }
-        
         </style>
         """,
         unsafe_allow_html=True,
@@ -670,417 +486,854 @@ def inject_css() -> None:
 
 
 inject_css()
-# ============================================================================
-# LANDING PAGE
-# ============================================================================
+
+
+# ---------------------------------------------------------------------------
+# Shared header (public pages)
+# ---------------------------------------------------------------------------
+
+def render_public_header() -> None:
+    """Minimal header with brand and working Register/Login links."""
+    c1, c2, c3 = st.columns([2.2, 1, 1])
+    with c1:
+        st.markdown(
+            '<div class="brand-block">'
+            '<div class="brand-logo">Lingala</div>'
+            '<div class="brand-sub">Intent Classifier</div>'
+            '<div class="brand-sub" style="margin-top:0.25rem;">Team 07 — Datalynk</div>'
+            '</div>',
+            unsafe_allow_html=True,
+        )
+    with c2:
+        if st.button("Register", key="hdr_register", use_container_width=True):
+            st.session_state["page"] = "register"
+            st.rerun()
+    with c3:
+        if st.button("Login", key="hdr_login", use_container_width=True):
+            st.session_state["page"] = "login"
+            st.rerun()
+
+
+def render_footer(authenticated: bool) -> None:
+    """Footer with working Register/Login links and project identity."""
+    st.markdown('<div class="footer">', unsafe_allow_html=True)
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown(
+            f"<strong>Lingala Intent Classifier</strong><br>"
+            f"Team 07 — {TEAM_NAME}<br>"
+            f"{DATATHON_NAME}<br>"
+            f"Track A — Intent Classification<br>"
+            f"Model language: {TARGET_LANGUAGE}",
+            unsafe_allow_html=True,
+        )
+    with c2:
+        st.markdown(
+            '<a href="#research" style="color: var(--text-secondary); text-decoration: none; margin-right: 1rem;">Research</a>'
+            '<a href="#about" style="color: var(--text-secondary); text-decoration: none; margin-right: 1rem;">About</a>',
+            unsafe_allow_html=True,
+        )
+        col_a, col_b = st.columns(2)
+        with col_a:
+            if st.button("Register", key="ftr_register", use_container_width=True):
+                st.session_state["page"] = "register"
+                st.rerun()
+        with col_b:
+            if st.button("Login", key="ftr_login", use_container_width=True):
+                st.session_state["page"] = "login"
+                st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
+# ---------------------------------------------------------------------------
+# Landing page (public)
+# ---------------------------------------------------------------------------
 
 def page_landing() -> None:
-    """Public landing page - simple, professional, focused."""
-    
-    # Navigation
-    st.markdown(
-        """
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; margin-bottom: 2rem; max-width: 1400px; margin-left: auto; margin-right: auto;">
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="font-size: 1.5rem; font-weight: 800; color: var(--navy-primary);">Lingala</span>
-                <span style="font-size: 1.5rem; font-weight: 600; color: var(--accent-teal);">Classifier</span>
-            </div>
-            <div style="display: flex; gap: 1.5rem; align-items: center;">
-                <a href="#about" style="color: var(--text-secondary); text-decoration: none; font-weight: 500;">About</a>
-                <a href="#research" style="color: var(--text-secondary); text-decoration: none; font-weight: 500;">Research</a>
-                <button onclick="window.location.href='#login'" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Sign in</button>
-                <button onclick="window.location.href='#register'" style="background: var(--accent-teal); border: none; color: var(--bg-white); padding: 0.5rem 1.25rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Get started</button>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    
-    # Hero section
+    """Public landing page — product identity, motivation, how it works, stats."""
+    render_public_header()
+
+    # Hero
     st.markdown(
         """
         <div class="hero">
-            <div style="max-width: 800px; margin: 0 auto;">
-                <span style="display: inline-block; background: rgba(255,255,255,0.15); padding: 0.35rem 0.75rem; border-radius: 999px; font-size: 0.875rem; font-weight: 600; margin-bottom: 1.5rem;">
-                    AFRICAN LANGUAGE TECHNOLOGY · NLP RESEARCH
+            <div style="max-width: 800px;">
+                <span style="display: inline-block; background: rgba(255,255,255,0.15); padding: 0.35rem 0.75rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600; margin-bottom: 1.25rem;">
+                    AFRICAN LANGUAGE TECHNOLOGY &middot; NLP RESEARCH
                 </span>
-                <h1 style="font-size: 3.5rem; margin-bottom: 1.25rem; line-height: 1.1;">Understanding the intent behind Lingala text.</h1>
-                <p style="font-size: 1.25rem; line-height: 1.6; color: #CBD5E1; margin-bottom: 2rem;">
-                    Explore an experimental AI system designed to investigate how natural language processing can identify communicative intent in Lingala.
+                <h1>Understanding the intent behind Lingala text.</h1>
+                <p>
+                    An experimental AI research system that identifies the communicative
+                    intent in a Lingala sentence using a transparent, trained baseline model.
                 </p>
-                <div class="hero-cta">
-                    <button onclick="window.location.href='#workspace'" style="background: var(--accent-teal); border: none; color: var(--bg-white); padding: 0.875rem 2rem; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(21, 156, 140, 0.35);">Explore the Classifier</button>
-                    <button onclick="window.location.href='#research'" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); color: var(--bg-white); padding: 0.875rem 2rem; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer;">Discover the Research</button>
-                </div>
-                <span style="display: inline-block; margin-top: 2rem; background: rgba(255,255,255,0.15); padding: 0.35rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;">
-                    A DATATHON RESEARCH PROTOTYPE
-                </span>
             </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
-    
-    # Two-column layout
+
     col1, col2 = st.columns([1.2, 1], gap="large")
-    
+
     with col1:
-        # Why Lingala NLP
         st.markdown("### Why Lingala NLP?")
         st.write(
-            "Low-resource language NLP faces data scarcity, limited tooling, and evaluation challenges. "
-            "Building intent classification resources for Lingala supports exploration of everyday language technology "
-            "for African languages and highlights practical constraints in small-data settings."
+            "Low-resource language NLP faces data scarcity, limited tooling, and "
+            "evaluation challenges. Building intent classification resources for Lingala "
+            "supports exploration of everyday language technology for African languages "
+            "and highlights practical constraints in small-data settings."
         )
         st.write(
-            "This research prototype explores how machine learning can classify everyday Lingala requests "
-            "using a small, reviewed dataset and a transparent baseline model."
+            "This research prototype explores how machine learning can classify everyday "
+            "Lingala requests using a small, reviewed dataset and a transparent baseline model."
         )
-        
-        # How it works - NO EMOJIS
+
         st.markdown("### How it works")
         st.markdown(
             """
-            <div class="workflow">
-                <div class="workflow-step">
-                    <div class="workflow-icon">Input</div>
-                    <div class="workflow-label">Input text</div>
-                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">Enter a Lingala sentence</p>
+            <div style="display: flex; gap: 1rem; margin: 1rem 0; flex-wrap: wrap;">
+                <div class="card" style="flex: 1; min-width: 180px; text-align: center; padding: 1rem;">
+                    <div style="font-size: 1.75rem; color: var(--accent-teal); margin-bottom: 0.5rem;">Input</div>
+                    <div style="font-weight: 600; color: var(--navy-primary); margin-bottom: 0.25rem;">Enter text</div>
+                    <div style="font-size: 0.85rem; color: var(--text-secondary);">Type a Lingala sentence</div>
                 </div>
-                <div class="workflow-arrow">→</div>
-                <div class="workflow-step">
-                    <div class="workflow-icon">Processing</div>
-                    <div class="workflow-label">Model processing</div>
-                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">Character TF-IDF + Logistic Regression</p>
+                <div style="display: flex; align-items: center; color: var(--text-secondary);">&#8594;</div>
+                <div class="card" style="flex: 1; min-width: 180px; text-align: center; padding: 1rem;">
+                    <div style="font-size: 1.75rem; color: var(--accent-teal); margin-bottom: 0.5rem;">Model</div>
+                    <div style="font-weight: 600; color: var(--navy-primary); margin-bottom: 0.25rem;">Character TF-IDF</div>
+                    <div style="font-size: 0.85rem; color: var(--text-secondary);">+ Logistic Regression</div>
                 </div>
-                <div class="workflow-arrow">→</div>
-                <div class="workflow-step">
-                    <div class="workflow-icon">Prediction</div>
-                    <div class="workflow-label">Intent prediction</div>
-                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">One of 10 intent categories</p>
+                <div style="display: flex; align-items: center; color: var(--text-secondary);">&#8594;</div>
+                <div class="card" style="flex: 1; min-width: 180px; text-align: center; padding: 1rem;">
+                    <div style="font-size: 1.75rem; color: var(--accent-teal); margin-bottom: 0.5rem;">Prediction</div>
+                    <div style="font-weight: 600; color: var(--navy-primary); margin-bottom: 0.25rem;">Intent label</div>
+                    <div style="font-size: 0.85rem; color: var(--text-secondary);">One of 10 categories</div>
                 </div>
             </div>
             """,
             unsafe_allow_html=True,
         )
-        
-        # Quick stats
-        st.markdown("### Project Snapshot")
+
+        st.markdown("### Project snapshot")
         s = get_summary()
-        st.markdown(
-            f"""
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem;">
-                <div class="metric-card">
-                    <div class="metric-value">{s.get('total', 0) if s.get('exists') else '0'}</div>
-                    <div class="metric-label">Records</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">10</div>
-                    <div class="metric-label">Intents</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">Lingala</div>
-                    <div class="metric-label">Language</div>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-    
+        m1, m2, m3 = st.columns(3)
+        with m1:
+            st.markdown(
+                f'<div class="metric-card">'
+                f'<div class="metric-value">{s.get("total", 0) if s.get("exists") else 0}</div>'
+                f'<div class="metric-label">Reviewed records</div>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+        with m2:
+            st.markdown(
+                '<div class="metric-card">'
+                '<div class="metric-value">10</div>'
+                '<div class="metric-label">Intent categories</div>'
+                '</div>',
+                unsafe_allow_html=True,
+            )
+        with m3:
+            st.markdown(
+                f'<div class="metric-card">'
+                f'<div class="metric-value">{s.get("language", TARGET_LANGUAGE) if s.get("exists") else TARGET_LANGUAGE}</div>'
+                f'<div class="metric-label">Training language</div>'
+                '</div>',
+                unsafe_allow_html=True,
+            )
+
     with col2:
-        # Visual illustration - NO EMOJIS
-        st.markdown(
-            """
-            <div class="card" style="height: 100%;">
-                <h3 style="margin-top: 0;">Classification Demo</h3>
-                <div style="background: #F8FAFC; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
-                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Input</div>
-                    <div style="font-size: 1rem; color: var(--text-primary);">Tala mbula lelo.</div>
-                </div>
-                <div style="display: flex; justify-content: center; margin: 1rem 0;">
-                    <span style="font-size: 1.5rem;">Processing</span>
-                </div>
-                <div style="background: #E0F2F1; border-radius: 8px; padding: 1rem;">
-                    <div style="font-size: 0.875rem; color: var(--accent-teal); margin-bottom: 0.5rem;">Predicted</div>
-                    <div style="font-size: 1.125rem; font-weight: 600; color: var(--navy-primary);">Weather enquiry</div>
-                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">weather_query</div>
-                </div>
-                <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 1rem; margin-bottom: 0;">
-                    * This is a demonstration. Actual predictions may vary.
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
+        st.markdown("### Try the classifier")
+        st.write(
+            "Enter any Lingala sentence and receive a real predicted intent from the "
+            "trained model — no account required."
         )
-    
-    # CTA section
+        if st.button("Open the classifier", key="landing_open_classifier", type="primary", use_container_width=True):
+            st.session_state["page"] = "classifier"
+            st.rerun()
+
+    # Route into classifier
     st.markdown("---")
-    st.markdown(
-        """
-        <div style="text-align: center; padding: 3rem 1rem;">
-            <h2 style="margin-bottom: 1rem;">Ready to explore the classifier?</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-                Join our research community or try the classifier as a guest. No account required for demo access.
-            </p>
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <button onclick="window.location.href='#register'" style="background: var(--accent-teal); border: none; color: var(--bg-white); padding: 1rem 2rem; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(21, 156, 140, 0.35);">Create Account</button>
-                <button onclick="window.location.href='#login'" style="background: var(--bg-white); border: 1px solid var(--border-color); color: var(--text-primary); padding: 1rem 2rem; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer;">Sign In</button>
-                <button onclick="window.location.href='#workspace'" style="background: transparent; border: 1px solid var(--accent-teal); color: var(--accent-teal); padding: 1rem 2rem; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer;">Explore as Guest</button>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    
-    # Footer
-    st.markdown(
-        """
-        <div class="footer">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                <div>
-                    <strong>Lingala Intent Classifier</strong><br>
-                    Team 07 — Datalynk<br>
-                    Strathmore NLP Hub Datathon 2026<br>
-                    Track A — Intent Classification
-                </div>
-                <div style="display: flex; gap: 2rem;">
-                    <a href="#about" style="color: var(--text-secondary); text-decoration: none;">About</a>
-                    <a href="#research" style="color: var(--text-secondary); text-decoration: none;">Research</a>
-                    <a href="https://github.com/emmah-mwangi/Lingala-NLP-Datathon" style="color: var(--text-secondary); text-decoration: none;">GitHub</a>
-                </div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("### Get started")
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        if st.button("Create account", key="cta_register", use_container_width=True):
+            st.session_state["page"] = "register"
+            st.rerun()
+    with c2:
+        if st.button("Sign in", key="cta_login", use_container_width=True):
+            st.session_state["page"] = "login"
+            st.rerun()
+    with c3:
+        if st.button("Continue as guest", key="cta_guest", use_container_width=True):
+            guest_login()
+            st.session_state["page"] = "classifier"
+            st.rerun()
+
+    render_footer(False)
 
 
-# ============================================================================
-# AUTHENTICATION PAGES
-# ============================================================================
+# ---------------------------------------------------------------------------
+# Login / Register
+# ---------------------------------------------------------------------------
 
 def page_login() -> None:
-    """Login page with clean, centered design."""
-    
+    """Login page."""
+    c1, c2, c3 = st.columns([2.2, 1, 1])
+    with c1:
+        st.markdown(
+            '<div class="brand-block">'
+            '<div class="brand-logo">Lingala</div>'
+            '<div class="brand-sub">Intent Classifier</div>'
+            '</div>',
+            unsafe_allow_html=True,
+        )
+    with c2:
+        if st.button("Register", key="lgn_hdr_register", use_container_width=True):
+            st.session_state["page"] = "register"
+            st.rerun()
+    with c3:
+        if st.button("Home", key="lgn_hdr_home", use_container_width=True):
+            st.session_state["page"] = "landing"
+            st.rerun()
+
+    st.markdown("### Sign in")
+    with st.form("login_form", clear_on_submit=False):
+        username = st.text_input("Username or email")
+        password = st.text_input("Password", type="password")
+        submitted = st.form_submit_button("Sign in", type="primary", use_container_width=True)
+    if submitted:
+        if not username or not password:
+            st.error("Please enter both username and password.")
+        else:
+            success, message = authenticate(username, password)
+            if success:
+                st.success("Login successful!")
+                st.session_state["page"] = "workspace"
+                st.rerun()
+            else:
+                st.error(message)
+
     st.markdown(
-        """
-        <div style="max-width: 400px; margin: 0 auto; padding: 2rem 1rem;">
-            <div style="text-align: center; margin-bottom: 2rem;">
-                <div style="font-size: 2rem; font-weight: 800; color: var(--navy-primary); margin-bottom: 0.5rem;">Lingala</div>
-                <div style="font-size: 1.5rem; font-weight: 600; color: var(--accent-teal);">Classifier</div>
-                <p style="color: var(--text-secondary); margin-top: 1rem;">Sign in to continue to your workspace</p>
-            </div>
-            
-            <div class="card">
-                <form>
-                    <div style="margin-bottom: 1rem;">
-                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Username or Email</label>
-                        <input type="text" id="login_username" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;" placeholder="Enter your username">
-                    </div>
-                    
-                    <div style="margin-bottom: 1.5rem;">
-                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Password</label>
-                        <input type="password" id="login_password" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;" placeholder="Enter your password">
-                    </div>
-                    
-                    <button id="login_button" style="width: 100%; background: var(--accent-teal); border: none; color: var(--bg-white); padding: 0.875rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-bottom: 1rem;">Sign In</button>
-                    
-                    <div style="text-align: center; margin-bottom: 1.5rem;">
-                        <span style="color: var(--text-secondary); font-size: 0.875rem;">Don't have an account? </span>
-                        <a href="#register" style="color: var(--accent-teal); text-decoration: none; font-weight: 600;">Create one</a>
-                    </div>
-                    
-                    <div style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
-                        <button id="guest_button" style="width: 100%; background: var(--bg-white); border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.75rem; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer;">Continue as Guest</button>
-                    </div>
-                    
-                    <div style="text-align: center; margin-top: 1rem;">
-                        <a href="#home" style="color: var(--text-secondary); text-decoration: none; font-size: 0.875rem;">← Back to home</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-        """,
+        '<div style="margin-top: 1rem; text-align: center;">'
+        '<span style="color: var(--text-secondary); font-size: 0.875rem;">'
+        "Don't have an account? </span>",
         unsafe_allow_html=True,
     )
-    
-    # Handle login logic
-    if "login_username" in st.session_state and "login_password" in st.session_state:
-        username = st.session_state.get("login_username", "")
-        password = st.session_state.get("login_password", "")
-        
-        if st.session_state.get("_login_clicked", False):
-            if not username or not password:
-                st.error("Please enter both username and password.")
-            else:
-                success, message = authenticate(username, password)
-                if success:
-                    st.success("Login successful!")
-                    st.session_state["page"] = "workspace"
-                    st.rerun()
-                else:
-                    st.error(message)
-            st.session_state["_login_clicked"] = False
+    if st.button("Create one", key="lgn_create"):
+        st.session_state["page"] = "register"
+        st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
+    render_footer(False)
 
 
 def page_register() -> None:
-    """Registration page with clean, centered design."""
-    
-    st.markdown(
-        """
-        <div style="max-width: 400px; margin: 0 auto; padding: 2rem 1rem;">
-            <div style="text-align: center; margin-bottom: 2rem;">
-                <div style="font-size: 2rem; font-weight: 800; color: var(--navy-primary); margin-bottom: 0.5rem;">Lingala</div>
-                <div style="font-size: 1.5rem; font-weight: 600; color: var(--accent-teal);">Classifier</div>
-                <p style="color: var(--text-secondary); margin-top: 1rem;">Get access to the classification workspace</p>
-            </div>
-            
-            <div class="card">
-                <form>
-                    <div style="margin-bottom: 1rem;">
-                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Full Name</label>
-                        <input type="text" id="reg_full_name" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;" placeholder="John Doe">
-                    </div>
-                    
-                    <div style="margin-bottom: 1rem;">
-                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Username</label>
-                        <input type="text" id="reg_username" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;" placeholder="johndoe">
-                    </div>
-                    
-                    <div style="margin-bottom: 1rem;">
-                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Email Address</label>
-                        <input type="email" id="reg_email" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;" placeholder="john@example.com">
-                    </div>
-                    
-                    <div style="margin-bottom: 1rem;">
-                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Password</label>
-                        <input type="password" id="reg_password" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;" placeholder="••••••••">
-                    </div>
-                    
-                    <div style="margin-bottom: 1.5rem;">
-                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Confirm Password</label>
-                        <input type="password" id="reg_confirm_password" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;" placeholder="••••••••">
-                    </div>
-                    
-                    <button id="register_button" style="width: 100%; background: var(--accent-teal); border: none; color: var(--bg-white); padding: 0.875rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-bottom: 1rem;">Create Account</button>
-                    
-                    <div style="text-align: center; margin-bottom: 1.5rem;">
-                        <span style="color: var(--text-secondary); font-size: 0.875rem;">Already have an account? </span>
-                        <a href="#login" style="color: var(--accent-teal); text-decoration: none; font-weight: 600;">Sign in</a>
-                    </div>
-                    
-                    <div style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
-                        <button id="reg_guest_button" style="width: 100%; background: var(--bg-white); border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.75rem; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer;">Continue as Guest</button>
-                    </div>
-                    
-                    <div style="text-align: center; margin-top: 1rem;">
-                        <a href="#home" style="color: var(--text-secondary); text-decoration: none; font-size: 0.875rem;">← Back to home</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-# ============================================================================
-# MAIN APPLICATION WORKSPACE
-# ============================================================================
-
-def render_workspace_navigation() -> str:
-    """Render sidebar navigation for authenticated workspace."""
-    backend = get_backend(TRACK)
-    
-    with st.sidebar:
-        # Branding
+    """Registration page."""
+    c1, c2, c3 = st.columns([2.2, 1, 1])
+    with c1:
         st.markdown(
-            """
-            <div class="brand-block">
-                <div class="brand-logo">Lingala</div>
-                <div class="brand-sub">Classifier</div>
-                <div class="brand-sub" style="margin-top: 0.5rem;">Team 07 — Datalynk</div>
-                <div class="brand-sub" style="margin-top: 0.25rem;">Strathmore NLP Hub 2026</div>
-                <span class="brand-badge">Research Prototype</span>
-            </div>
-            """,
+            '<div class="brand-block">'
+            '<div class="brand-logo">Lingala</div>'
+            '<div class="brand-sub">Intent Classifier</div>'
+            '</div>',
             unsafe_allow_html=True,
         )
-        
-        # User info
-        if check_auth():
-            user = get_current_user()
-            if user:
-                st.markdown(
-                    f"""
-                    <div style="padding: 1rem; background: #F8FAFC; border-radius: 8px; margin-bottom: 1rem;">
-                        <div style="font-size: 0.875rem; color: var(--text-primary); font-weight: 600;">Logged in as</div>
-                        <div style="font-size: 1rem; color: var(--navy-primary); font-weight: 700;">{user.get('username', 'user')}</div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
-                if st.button("Logout", use_container_width=True):
-                    logout()
-                    st.rerun()
+    with c2:
+        if st.button("Login", key="reg_hdr_login", use_container_width=True):
+            st.session_state["page"] = "login"
+            st.rerun()
+    with c3:
+        if st.button("Home", key="reg_hdr_home", use_container_width=True):
+            st.session_state["page"] = "landing"
+            st.rerun()
+
+    st.markdown("### Create account")
+    with st.form("register_form", clear_on_submit=False):
+        full_name = st.text_input("Full name")
+        username = st.text_input("Username")
+        email = st.text_input("Email address")
+        password = st.text_input("Password", type="password")
+        confirm_password = st.text_input("Confirm password", type="password")
+        submitted = st.form_submit_button("Create account", type="primary", use_container_width=True)
+    if submitted:
+        if not all([full_name, username, email, password, confirm_password]):
+            st.error("Please fill in all fields.")
+        elif password != confirm_password:
+            st.error("Passwords do not match.")
         else:
+            success, message = register_user(username, email, password, full_name)
+            if success:
+                st.success("Account created successfully! Please sign in.")
+                st.session_state["page"] = "login"
+                st.rerun()
+            else:
+                st.error(message)
+
+    st.markdown(
+        '<div style="margin-top: 1rem; text-align: center;">'
+        '<span style="color: var(--text-secondary); font-size: 0.875rem;">'
+        "Already have an account? </span>",
+        unsafe_allow_html=True,
+    )
+    if st.button("Sign in", key="reg_signin"):
+        st.session_state["page"] = "login"
+        st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
+    render_footer(False)
+
+
+# ---------------------------------------------------------------------------
+# Phase 2 — Core classifier
+# ---------------------------------------------------------------------------
+
+def page_classifier() -> None:
+    """Core classifier: real text input, submit, loading, real prediction."""
+    c1, c2, c3 = st.columns([2.2, 1, 1])
+    with c1:
+        st.markdown(
+            '<div class="brand-block">'
+            '<div class="brand-logo">Lingala</div>'
+            '<div class="brand-sub">Intent Classifier</div>'
+            '</div>',
+            unsafe_allow_html=True,
+        )
+    with c2:
+        if st.button("Register", key="clf_hdr_register", use_container_width=True):
+            st.session_state["page"] = "register"
+            st.rerun()
+    with c3:
+        if st.button("Login", key="clf_hdr_login", use_container_width=True):
+            st.session_state["page"] = "login"
+            st.rerun()
+
+    st.markdown("### AI Classifier")
+    st.write(
+        "Enter a Lingala sentence to receive a real predicted intent from the trained "
+        "character-TF-IDF + logistic regression model."
+    )
+
+    backend = get_backend(TRACK)
+    if not backend["available"]:
+        st.error(backend["error"])
+        st.info("Train the model first: `python train.py --track intent --data data/contribution.csv`")
+        render_footer(check_auth())
+        return
+
+    pack = backend["pack"]
+    model_language = pack.get("language", "unknown")
+    is_practice = bool(pack.get("practice", False))
+
+    if model_language != TARGET_LANGUAGE:
+        st.warning(
+            f"The loaded model was trained on '{model_language}', not '{TARGET_LANGUAGE}'. "
+            "Predictions may not be meaningful for Lingala input."
+        )
+    if is_practice:
+        st.info("Running in practice mode (teaching fixture).")
+
+    text = st.text_area(
+        "Lingala text",
+        placeholder="e.g. Tala mbula lelo.",
+        height=140,
+        help="Type a Lingala sentence to classify.",
+    )
+
+    col_btn, col_space = st.columns([1, 4])
+    with col_btn:
+        classify = st.button("Classify", key="clf_classify", type="primary", use_container_width=True)
+
+    if classify:
+        if not text or not text.strip():
+            st.error("Please enter some text before classifying.")
+        else:
+            with st.spinner("Classifying your input..."):
+                out = _run_prediction(text.strip(), pack)
+            if out is None:
+                render_footer(check_auth())
+                return
+            result = out["result"]
+            proba = out["proba"]
+
+            info = get_intent_info().get(result.label, {})
             st.markdown(
-                """
-                <div style="padding: 1rem; background: #F8FAFC; border-radius: 8px; margin-bottom: 1rem;">
-                    <div style="font-size: 0.875rem; color: var(--text-primary); font-weight: 600;">Guest access</div>
-                </div>
-                """,
+                f'<div class="result-card">'
+                f'<h4>Predicted intent</h4>'
+                f'<div style="font-size: 1.5rem; font-weight: 700; color: var(--navy-primary); margin-bottom: 0.25rem;">'
+                f'{info.get("name", result.label)}</div>'
+                f'<div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">'
+                f'<code>{result.label}</code></div>'
+                f'<div style="font-size: 0.95rem; color: var(--accent-teal-dark); font-weight: 600;">'
+                f'Model confidence: {format_probability(result.probability)} '
+                f'({confidence_band(result.probability)})</div>'
+                f'</div>',
                 unsafe_allow_html=True,
             )
-        
-        # Navigation sections
-        st.markdown('<div class="nav-section-title">AI WORKSPACE</div>', unsafe_allow_html=True)
+
+            st.markdown("### Intent definition")
+            st.markdown(
+                f'<div class="card">'
+                f'<div style="font-weight: 600; color: var(--navy-primary); margin-bottom: 0.25rem;">{info.get("name", result.label)}</div>'
+                f'<div style="color: var(--text-primary); margin-bottom: 0.5rem;">{info.get("meaning", "No definition available.")}</div>'
+                f'<div style="font-size: 0.85rem; color: var(--text-secondary);"><strong>Boundary:</strong> {info.get("boundary", "")}</div>'
+                f'<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;"><strong>Example (Lingala):</strong> {info.get("example", "")}</div>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+            if proba:
+                st.markdown("### Supported probability distribution")
+                prob_df = pd.DataFrame([
+                    {"intent": p["label"], "probability": p["probability"]}
+                    for p in proba
+                ])
+                st.bar_chart(prob_df.set_index("intent"))
+                st.caption(
+                    "Probabilities are the model's real, uncalibrated output for this input. "
+                    "They are not confidence guarantees."
+                )
+
+            st.markdown("### Model limitations")
+            st.markdown(
+                f'<div class="card badge-warning" style="padding: 1rem;">'
+                f'{build_disclaimer(TRACK)}<br>'
+                f'Trained on {TARGET_LANGUAGE} only ({model_language}). Small dataset: '
+                f'{pack.get("data_sha256", "")[:12]}... fingerprint. '
+                f'Test accuracy 0.960 / macro-F1 0.960 on 50 held-out rows. '
+                f'No external action (calendar, music, weather) is executed — this is a simulated route only.'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+    render_footer(check_auth())
+
+
+# ---------------------------------------------------------------------------
+# Phase 4 — Authenticated workspace
+# ---------------------------------------------------------------------------
+
+WORKSPACE_PAGES = [
+    "Overview",
+    "AI Classifier",
+    "Intent Boundary Lab",
+    "Dataset Explorer",
+    "Model Performance",
+    "Error Analysis",
+    "Research Information",
+    "Audio",
+]
+
+
+def render_workspace_sidebar() -> str:
+    """Sidebar navigation for the authenticated workspace. Returns chosen page key."""
+    user = get_current_user()
+    with st.sidebar:
+        st.markdown(
+            '<div class="brand-block">'
+            '<div class="brand-logo">Lingala</div>'
+            '<div class="brand-sub">Workspace</div>'
+            '<div class="brand-sub" style="margin-top:0.25rem;">Team 07 — Datalynk</div>'
+            '<span class="brand-badge badge-navy">Authenticated</span>'
+            '</div>',
+            unsafe_allow_html=True,
+        )
+        if user:
+            st.markdown(
+                f'<div style="padding: 0.75rem 1rem; background: #F2F5F7; border-radius: 8px; margin-bottom: 1rem;">'
+                f'<div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600;">Logged in as</div>'
+                f'<div style="font-size: 0.95rem; color: var(--navy-primary); font-weight: 600;">{user.get("username", "user")}</div>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+            if st.button("Logout", key="ws_logout", use_container_width=True):
+                logout()
+                st.rerun()
+
+        st.markdown(
+            '<div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-secondary); font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem;">AI WORKSPACE &middot; RESEARCH</div>',
+            unsafe_allow_html=True,
+        )
         page = st.radio(
             "",
-            ["AI Classifier", "Intent Boundary Lab"],
+            WORKSPACE_PAGES,
             label_visibility="collapsed",
-            key="nav_workspace",
+            key="ws_page",
+            index=WORKSPACE_PAGES.index(st.session_state.get("ws_active_view", "AI Classifier")),
         )
-        
-        st.markdown('<div class="nav-section-title">RESEARCH</div>', unsafe_allow_html=True)
-        page = st.radio(
-            "",
-            ["Dataset Explorer", "Model Performance", "Error Analysis", "About Research"],
-            label_visibility="collapsed",
-            key="nav_research",
-        )
-        
+        st.session_state["ws_active_view"] = page
+
         st.divider()
-        
-        # Backend status
+        backend = get_backend(TRACK)
         if backend["available"]:
             st.caption("Backend: available")
             if backend["pack"].get("practice"):
-                st.caption("Mode: practice model (English)")
+                st.caption("Mode: practice model")
             else:
-                st.caption(f"Model language: {backend['pack'].get('language', 'unknown')}")
+                st.caption(f"Language: {backend['pack'].get('language', 'unknown')}")
         else:
             st.caption("Backend: unavailable")
         st.caption("No fabricated predictions")
-    
+
     return page
 
 
 def page_workspace() -> None:
-    """Main workspace - shows landing page for unauthenticated users."""
-    page_landing()
+    """Authenticated workspace — minimal app with classifier as the prominent feature."""
+    if not check_auth():
+        st.session_state["page"] = "landing"
+        st.rerun()
+        return
+
+    # Top bar with logout
+    c1, c2 = st.columns([4, 1])
+    with c1:
+        st.markdown(
+            '<div class="brand-block">'
+            '<div class="brand-logo">Lingala</div>'
+            '<div class="brand-sub">Workspace</div>'
+            '</div>',
+            unsafe_allow_html=True,
+        )
+    with c2:
+        if st.button("Logout", key="ws_top_logout", use_container_width=True):
+            logout()
+            st.rerun()
+
+    active = render_workspace_sidebar()
+
+    if active == "Overview":
+        page_overview()
+    elif active == "AI Classifier":
+        page_classifier_workspace()
+    elif active == "Intent Boundary Lab":
+        page_intent_boundary_lab()
+    elif active == "Dataset Explorer":
+        page_dataset_explorer()
+    elif active == "Model Performance":
+        page_model_performance()
+    elif active == "Error Analysis":
+        page_error_analysis()
+    elif active == "Research Information":
+        page_research_info()
+    elif active == "Audio":
+        page_audio()
 
 
-# ============================================================================
-# MAIN ENTRY POINT
-# ============================================================================
+def page_overview() -> None:
+    """Workspace overview."""
+    st.markdown("## Overview")
+    st.write(
+        "Welcome to the Lingala Intent Classifier workspace. This is a research "
+        "prototype for identifying communicative intent in Lingala sentences."
+    )
+    s = get_summary()
+    m1, m2, m3, m4 = st.columns(4)
+    with m1:
+        st.markdown(
+            f'<div class="metric-card">'
+            f'<div class="metric-value">{s.get("total", 0) if s.get("exists") else 0}</div>'
+            f'<div class="metric-label">Records</div>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+    with m2:
+        st.markdown(
+            '<div class="metric-card">'
+            '<div class="metric-value">10</div>'
+            '<div class="metric-label">Intents</div>'
+            '</div>',
+            unsafe_allow_html=True,
+        )
+    with m3:
+        st.markdown(
+            '<div class="metric-card">'
+            '<div class="metric-value">150 / 50 / 50</div>'
+            '<div class="metric-label">Train / dev / test</div>'
+            '</div>',
+            unsafe_allow_html=True,
+        )
+    with m4:
+        backend = get_backend(TRACK)
+        ready = "Ready" if backend["available"] else "Not trained"
+        st.markdown(
+            f'<div class="metric-card">'
+            f'<div class="metric-value">{ready}</div>'
+            f'<div class="metric-label">Model</div>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+    st.markdown(
+        "Use the sidebar to navigate. The <strong>AI Classifier</strong> is the "
+        "central feature of this workspace.",
+        unsafe_allow_html=True,
+    )
+
+
+def page_classifier_workspace() -> None:
+    """Classifier rendered prominently inside the authenticated workspace."""
+    st.markdown("## AI Classifier")
+    st.caption("Most prominent feature of the workspace — real model predictions on Lingala text.")
+
+    backend = get_backend(TRACK)
+    if not backend["available"]:
+        st.error(backend["error"])
+        st.info("Train the model first: `python train.py --track intent --data data/contribution.csv`")
+        return
+
+    pack = backend["pack"]
+    text = st.text_area(
+        "Lingala text",
+        placeholder="e.g. Yemba miziki ya lingala.",
+        height=140,
+        key="ws_clf_text",
+    )
+    if st.button("Classify", key="ws_clf_classify", type="primary", use_container_width=True):
+        if not text or not text.strip():
+            st.error("Please enter some text before classifying.")
+        else:
+            with st.spinner("Classifying your input..."):
+                out = _run_prediction(text.strip(), pack)
+            if out is None:
+                return
+            result = out["result"]
+            proba = out["proba"]
+            info = get_intent_info().get(result.label, {})
+
+            st.markdown(
+                f'<div class="result-card">'
+                f'<h4>Predicted intent</h4>'
+                f'<div style="font-size: 1.5rem; font-weight: 700; color: var(--navy-primary); margin-bottom: 0.25rem;">'
+                f'{info.get("name", result.label)}</div>'
+                f'<div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;"><code>{result.label}</code></div>'
+                f'<div style="font-size: 0.95rem; color: var(--accent-teal-dark); font-weight: 600;">'
+                f'Model confidence: {format_probability(result.probability)} '
+                f'({confidence_band(result.probability)})</div>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+            if proba:
+                st.markdown("### Probability distribution")
+                prob_df = pd.DataFrame([
+                    {"intent": p["label"], "probability": p["probability"]}
+                    for p in proba
+                ])
+                st.bar_chart(prob_df.set_index("intent"))
+                st.caption("Real, uncalibrated model output — not a confidence guarantee.")
+            st.markdown(
+                f'<div class="card">'
+                f'<div style="font-weight: 600; color: var(--navy-primary); margin-bottom: 0.25rem;">Definition</div>'
+                f'<div style="color: var(--text-primary); margin-bottom: 0.5rem;">{info.get("meaning", "")}</div>'
+                f'<div style="font-size: 0.85rem; color: var(--text-secondary);"><strong>Boundary:</strong> {info.get("boundary", "")}</div>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+
+# ---------------------------------------------------------------------------
+# Phase 4 — remaining workspace pages
+# ---------------------------------------------------------------------------
+
+def page_intent_boundary_lab() -> None:
+    """Intent Boundary Lab — explore all 10 intents with definitions and examples."""
+    st.markdown("## Intent Boundary Lab")
+    st.write(
+        "Explore the 10 intent categories, their definitions, boundaries and "
+        "Lingala examples. Boundaries show where one intent ends and another begins."
+    )
+    info = get_intent_info()
+    labels = [
+        "weather_query", "datetime_query", "alarm_set", "calendar_set",
+        "calendar_query", "lists_createoradd", "lists_query", "play_music",
+        "news_query", "qa_definition",
+    ]
+    for label in labels:
+        entry = info.get(label, {})
+        with st.expander(f"{entry.get('name', label)} — `{label}`"):
+            st.markdown(
+                f'<div class="card">'
+                f'<div style="font-weight: 600; color: var(--navy-primary); margin-bottom: 0.25rem;">'
+                f'{entry.get("name", label)}</div>'
+                f'<div style="color: var(--text-primary); margin-bottom: 0.5rem;">{entry.get("meaning", "")}</div>'
+                f'<div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">'
+                f'<strong>Boundary:</strong> {entry.get("boundary", "")}</div>'
+                f'<div style="font-size: 0.85rem; color: var(--text-secondary);">'
+                f'<strong>Example (Lingala):</strong> {entry.get("example", "")}</div>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+
+def page_dataset_explorer() -> None:
+    """Dataset Explorer — view the contribution dataset summary and distribution."""
+    st.markdown("## Dataset Explorer")
+    s = get_summary()
+    if not s.get("exists"):
+        st.warning("No contribution dataset found at data/contribution.csv")
+        return
+    st.write(
+        f"Dataset: `{s['path']}` &middot; Language: {s.get('language')} &middot; "
+        f"Total records: {s['total']}"
+    )
+    st.markdown("### Label distribution")
+    dist = s.get("label_distribution", {})
+    if dist:
+        df = pd.DataFrame(sorted(dist.items()), columns=["label", "count"])
+        st.bar_chart(df.set_index("label"))
+    st.markdown("### Split distribution")
+    split = s.get("split_distribution", {})
+    if split:
+        df2 = pd.DataFrame(sorted(split.items()), columns=["split", "count"])
+        st.dataframe(df2, use_container_width=True, hide_index=True)
+    st.markdown("### Review coverage")
+    review = s.get("review_coverage", {})
+    if review:
+        df3 = pd.DataFrame(sorted(review.items()), columns=["review_status", "count"])
+        st.dataframe(df3, use_container_width=True, hide_index=True)
+
+
+def page_model_performance() -> None:
+    """Model Performance — verified evaluation metrics from evaluate.py."""
+    st.markdown("## Model Performance")
+    metrics = get_test_metrics(TRACK)
+    dev = get_dev_metrics(TRACK)
+    if not metrics:
+        st.warning("No test metrics found. Run `python evaluate.py --track intent --data data/contribution.csv`.")
+        return
+    model = metrics["model"]
+    baseline = metrics["majority_baseline"]
+    m1, m2, m3, m4 = st.columns(4)
+    with m1:
+        st.markdown(
+            f'<div class="metric-card">'
+            f'<div class="metric-value">{model["accuracy"]:.3f}</div>'
+            f'<div class="metric-label">Test accuracy</div>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+    with m2:
+        st.markdown(
+            f'<div class="metric-card">'
+            f'<div class="metric-value">{model["macro_f1"]:.3f}</div>'
+            f'<div class="metric-label">Test macro-F1</div>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+    with m3:
+        st.markdown(
+            f'<div class="metric-card">'
+            f'<div class="metric-value">{baseline["accuracy"]:.3f}</div>'
+            f'<div class="metric-label">Majority baseline accuracy</div>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+    with m4:
+        st.markdown(
+            f'<div class="metric-card">'
+            f'<div class="metric-value">{metrics.get("test_size", "?")}</div>'
+            f'<div class="metric-label">Test rows</div>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+    st.markdown("### Per-label F1 (test)")
+    report = model.get("report", {})
+    rows = []
+    for label in [
+        "weather_query", "datetime_query", "alarm_set", "calendar_set",
+        "calendar_query", "lists_createoradd", "lists_query", "play_music",
+        "news_query", "qa_definition",
+    ]:
+        if label in report:
+            rows.append({"intent": label, "f1": report[label]["f1-score"], "support": report[label]["support"]})
+    if rows:
+        st.bar_chart(pd.DataFrame(rows).set_index("intent")["f1"])
+        st.caption("Source: results/test_metrics.json (evaluate.py). Small test set — one sentence moves accuracy by 2 points.")
+    if dev:
+        st.markdown("### Dev metrics (used for setting choices)")
+        st.write(f"Dev macro-F1: {dev['model']['macro_f1']:.3f}")
+
+
+def page_error_analysis() -> None:
+    """Error Analysis — show test predictions and mismatches."""
+    st.markdown("## Error Analysis")
+    preds = get_test_predictions(TRACK)
+    if preds is None or preds.empty:
+        st.warning("No test predictions found. Run evaluate.py first.")
+        return
+    # Detect mismatches if both label and prediction columns exist.
+    mismatch = preds
+    if "label" in preds.columns and "predicted_label" in preds.columns:
+        mismatch = preds[preds["label"] != preds["predicted_label"]]
+        st.write(f"Test rows: {len(preds)} &middot; Misclassified: {len(mismatch)}")
+        st.dataframe(mismatch, use_container_width=True, hide_index=True)
+    else:
+        st.dataframe(preds, use_container_width=True, hide_index=True)
+        st.caption("Column schema varies by evaluate.py run; showing raw predictions.")
+
+
+def page_research_info() -> None:
+    """Research Information — motivation, method, limitations, citations."""
+    st.markdown("## Research Information")
+    st.markdown(
+        """
+        ### Motivation
+        Low-resource African languages such as Lingala lack intent-classification
+        resources. This prototype investigates whether a small, reviewed, human-authored
+        Lingala dataset can support a usable baseline intent classifier.
+
+        ### Method
+        - Data: 250 human-authored Lingala sentences across 10 intent categories.
+        - Split: 150 train / 50 dev / 50 test (15 / 5 / 5 per label).
+        - Model: character-TF-IDF (2–4 grams) + logistic regression (C=5.0).
+        - Evaluation: accuracy and macro-F1 on held-out test set, plus majority baseline.
+
+        ### Results
+        - Test accuracy: 0.960 &middot; macro-F1: 0.960.
+        - Majority baseline: 0.100 accuracy &middot; 0.018 macro-F1.
+
+        ### Limitations
+        - Small dataset; one test sentence moves accuracy by 2 points.
+        - Kinshasa Lingala focus; may not represent all varieties.
+        - No external action is executed (simulated route only).
+        - No audio / speech recognition for Lingala is supported.
+
+        ### Team
+        Team 7 — Datalynk &middot; Strathmore NLP Hub Datathon 2026 &middot; Track A
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Phase 5 — Audio (clearly labelled, no fake transcription)
+# ---------------------------------------------------------------------------
+
+def page_audio() -> None:
+    """Audio interface — clearly labelled; Lingala transcription is NOT supported."""
+    st.markdown("## Audio input")
+    st.warning(
+        "Speech recognition for Lingala is not supported by the available tooling, "
+        "and Lingala is not covered by major off-the-shelf speech-to-text models. "
+        "No transcription is performed and no audio is processed."
+    )
+    st.write(
+        "Upload or record audio here only to acknowledge the interface. "
+        "Classification requires text input via the AI Classifier."
+    )
+    uploaded = st.file_uploader("Audio file (placeholder only — not transcribed)", type=["wav", "mp3", "ogg", "m4a"])
+    if uploaded is not None:
+        st.info(
+            "File received but not transcribed. Lingala speech recognition is not "
+            "available in this prototype. Please type your Lingala sentence in the "
+            "AI Classifier instead."
+        )
+
+
+# ---------------------------------------------------------------------------
+# Main entry point
+# ---------------------------------------------------------------------------
 
 def main() -> None:
     """Main application entry point."""
-    # Initialize auth
     init_auth()
-    
-    # Initialize session state
+
     if "page" not in st.session_state:
         st.session_state["page"] = "landing"
     if "authenticated" not in st.session_state:
@@ -1089,30 +1342,24 @@ def main() -> None:
         st.session_state["user"] = None
     if "username" not in st.session_state:
         st.session_state["username"] = None
-    
-    # Render appropriate page based on auth state
+    if "ws_active_view" not in st.session_state:
+        st.session_state["ws_active_view"] = "AI Classifier"
+
     if not check_auth():
-        # Not authenticated - show landing, login, or register
         page = st.session_state.get("page", "landing")
-        
         if page == "landing":
             page_landing()
         elif page == "login":
             page_login()
         elif page == "register":
             page_register()
+        elif page == "classifier":
+            page_classifier()
+        else:
+            st.session_state["page"] = "landing"
+            page_landing()
     else:
-        # Authenticated - show workspace
-        render_workspace_navigation()
-        st.markdown(
-            """
-            <div style="padding: 2rem;">
-                <h1 style="color: var(--navy-primary);">Welcome to the Workspace</h1>
-                <p style="color: var(--text-secondary);">Select a page from the sidebar to get started.</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        page_workspace()
 
 
 if __name__ == "__main__":
