@@ -1,4 +1,4 @@
-"""
+﻿"""
 Pure formatting helpers for the Streamlit frontend.
 
 These functions take plain data and return plain strings / dicts. They make

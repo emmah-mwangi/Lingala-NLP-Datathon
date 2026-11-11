@@ -1,4 +1,4 @@
-"""
+﻿"""
 Shared utility helpers.
 
 Small functions used across modules. Each function is independently
